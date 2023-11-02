@@ -12,9 +12,13 @@ namespace _1013
 {
     public partial class Form2 : Form
     {
+        // Is password_wrong
+        bool isPasswordRight = false;
+
         public Form2()
         {
             InitializeComponent();
+            this.ControlBox = false; // 直接隱藏form2的關閉視窗按鈕
         }
 
         private void Form2_Load(object sender, EventArgs e)
@@ -39,12 +43,14 @@ namespace _1013
 
             if (String.Equals(password, textBox1.Text))
             {
+                isPasswordRight = true;
                 this.Close();
             }
             else
             {
                 MessageBox.Show("密碼錯誤");
             }
+
 
         }
 
@@ -55,5 +61,19 @@ namespace _1013
             // 關閉整個application
             System.Environment.Exit(0);
         }
+
+        private void close_form_action(object sender, FormClosingEventArgs e)
+        {
+            if (this.isPasswordRight)
+            {
+
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+
+        }
+
     }
 }
