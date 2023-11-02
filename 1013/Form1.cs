@@ -15,6 +15,11 @@ namespace _1013
         public Form1()
         {
             InitializeComponent();
+            // 打開程式後，跳出Form2，確認帳號密碼
+            Form2 form2;
+            form2 = new Form2();
+            form2.ShowDialog();
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -71,6 +76,11 @@ namespace _1013
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }
