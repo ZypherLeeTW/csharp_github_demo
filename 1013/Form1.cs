@@ -98,5 +98,44 @@ namespace _1013
             System.Environment.Exit(0);
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // 非商業用途
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Excel Files|*.xlsx";
+            openFileDialog.Title = "Open Excel File";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string filePath = openFileDialog.FileName;
+
+                using (ExcelPackage package = new ExcelPackage(new FileInfo(filePath)))
+                {
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets["Data"];
+
+                    // 確定工作表的行數和列數
+                    int rowCount = worksheet.Dimension.Rows;
+                    int colCount = worksheet.Dimension.Columns;
+
+                    // 創建二維陣列來存儲數據
+                    string[,] dataArray = new string[rowCount, colCount];
+
+                    // 逐行讀取Excel中的資料
+                    for (int row = 1; row <= rowCount; row++)
+                    {
+                        for (int col = 1; col <= colCount; col++)
+                        {
+                            dataArray[row - 1, col - 1] = worksheet.Cells[row, col].Text;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
