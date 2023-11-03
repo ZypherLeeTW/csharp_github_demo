@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace _1013
 {
     public partial class Form1 : Form
     {
+
         public Form1()
         {
             InitializeComponent();
@@ -22,10 +19,6 @@ namespace _1013
 
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -65,24 +58,45 @@ namespace _1013
                 , _radiobutton_log, _combobox_log, _price, _num, _price * _num });
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // 非商業用途
 
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Excel Files|*.xlsx";
+            saveFileDialog.Title = "Save as Excel File";
+            saveFileDialog.FileName = "exported_data.xlsx";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string filePath = saveFileDialog.FileName;
+
+                using (ExcelPackage package = new ExcelPackage())
+                {
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Data");
+
+                    // 將dataGridView1中的資料寫入工作表
+                    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                    {
+                        for (int j = 0; j < dataGridView1.Columns.Count; j++)
+                        {
+                            worksheet.Cells[i + 2, j + 1].Value = dataGridView1[j, i].Value;
+                        }
+                    }
+
+                    // 設定標題行格式
+                    worksheet.Row(1).Style.Font.Bold = true;
+
+                    // 儲存工作簿到指定路徑
+                    File.WriteAllBytes(filePath, package.GetAsByteArray());
+                }
+            }
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        private void button3_Click(object sender, EventArgs e)
         {
-
+            System.Environment.Exit(0);
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
