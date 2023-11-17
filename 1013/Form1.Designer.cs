@@ -232,7 +232,7 @@
             this.readMeToolStripMenuItem,
             this.abuotToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(59, 26);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(59, 23);
             this.toolStripMenuItem1.Text = "Read";
             // 
             // readMeToolStripMenuItem
@@ -284,7 +284,7 @@
             this.Column7});
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.RowHeadersWidth = 65;
             this.dataGridView1.RowTemplate.Height = 27;
             this.dataGridView1.Size = new System.Drawing.Size(931, 412);
             this.dataGridView1.TabIndex = 0;
