@@ -1,8 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Windows.Forms;
-using OfficeOpenXml;
-using OfficeOpenXml.Style;
 
 namespace _1013
 {
@@ -29,11 +26,7 @@ namespace _1013
             double _price = Convert.ToDouble(i_input_price);
 
             double _num = Convert.ToDouble(i_input_num);
-
-            double total = 0;
-
-            total = _price * _num;
-
+            
             string _radiobutton_log = "";
 
             if (radioButton1.Checked == true)
@@ -60,37 +53,7 @@ namespace _1013
 
         private void button2_Click(object sender, EventArgs e)
         {
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // 非商業用途
-
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Excel Files|*.xlsx";
-            saveFileDialog.Title = "Save as Excel File";
-            saveFileDialog.FileName = "exported_data.xlsx";
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                string filePath = saveFileDialog.FileName;
-
-                using (ExcelPackage package = new ExcelPackage())
-                {
-                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Data");
-
-                    // 將dataGridView1中的資料寫入工作表
-                    for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                    {
-                        for (int j = 0; j < dataGridView1.Columns.Count; j++)
-                        {
-                            worksheet.Cells[i + 2, j + 1].Value = dataGridView1[j, i].Value;
-                        }
-                    }
-
-                    // 設定標題行格式
-                    worksheet.Row(1).Style.Font.Bold = true;
-
-                    // 儲存工作簿到指定路徑
-                    File.WriteAllBytes(filePath, package.GetAsByteArray());
-                }
-            }
+            
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -100,37 +63,10 @@ namespace _1013
 
         private void button4_Click(object sender, EventArgs e)
         {
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // 非商業用途
 
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Excel Files|*.xlsx";
-            openFileDialog.Title = "Open Excel File";
+            
 
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                string filePath = openFileDialog.FileName;
-
-                using (ExcelPackage package = new ExcelPackage(new FileInfo(filePath)))
-                {
-                    ExcelWorksheet worksheet = package.Workbook.Worksheets["Data"];
-
-                    // 確定工作表的行數和列數
-                    int rowCount = worksheet.Dimension.Rows;
-                    int colCount = worksheet.Dimension.Columns;
-
-                    // 創建二維陣列來存儲數據
-                    string[,] dataArray = new string[rowCount, colCount];
-
-                    // 逐行讀取Excel中的資料
-                    for (int row = 1; row <= rowCount; row++)
-                    {
-                        for (int col = 1; col <= colCount; col++)
-                        {
-                            dataArray[row - 1, col - 1] = worksheet.Cells[row, col].Text;
-                        }
-                    }
-                }
-            }
+            
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
