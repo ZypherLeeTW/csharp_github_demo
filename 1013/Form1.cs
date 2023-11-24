@@ -25,11 +25,11 @@ namespace _1013
             Form2 form2;
             form2 = new Form2();
             form2.ShowDialog();
-
             Load_DB();
             Show_DB();
             label5.Text = index.ToString();
 
+            updateChart();
         }
 
         public class DBConfig
@@ -87,8 +87,50 @@ namespace _1013
             }
         }
 
+        public void updateChart()
+        {
+            // 1. 進貨統計
+
+            string sql = @"SELECT * from record where type = 1;";
+            DBConfig.sqlite_cmd = new SQLiteCommand(sql, DBConfig.sqlite_connect);
+            DBConfig.sqlite_datareader = DBConfig.sqlite_cmd.ExecuteReader();
+
+            Dictionary<string, double> _stocks_bar_out = new Dictionary<string, double>();
+            Dictionary<string, double> _stocks_bar_out_sum = new Dictionary<string, double>();
+
+            if (DBConfig.sqlite_datareader.HasRows)
+            {
+                while (DBConfig.sqlite_datareader.Read()) //read every data
+                {
+                    string _name = Convert.ToString(DBConfig.sqlite_datareader["name"]);
+                    double _price = Convert.ToDouble(DBConfig.sqlite_datareader["price"]);
+                    double _number = Convert.ToDouble(DBConfig.sqlite_datareader["number"]);
+                    if (!_stocks_bar_out.ContainsKey(_name))
+                    {
+                        _stocks_bar_out.Add(_name, 0);
+                        _stocks_bar_out_sum.Add(_name, 0);
+                    }
+                    _stocks_bar_out[_name] = _stocks_bar_out[_name] + _number;
+                    _stocks_bar_out_sum[_name] = _stocks_bar_out_sum[_name] + _number * _price;
+                }
+                DBConfig.sqlite_datareader.Close();
+            }
 
 
+
+            this.chart1.Series["stocks"].Points.Clear();
+            foreach (var OneItem in _stocks_bar_out)
+            {
+                this.chart1.Series["stocks"].Points.AddXY(OneItem.Key, OneItem.Value);
+            }
+
+            this.chart2.Series["stocks"].Points.Clear();
+            foreach (var OneItem in _stocks_bar_out_sum)
+            {
+                this.chart2.Series["stocks"].Points.AddXY(OneItem.Key, OneItem.Value);
+            }
+
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -128,11 +170,12 @@ namespace _1013
                        + " '" + _number.ToString() + "'   "
                       + ");";
             DBConfig.sqlite_cmd = new SQLiteCommand(sql, DBConfig.sqlite_connect);
+            DBConfig.sqlite_cmd.ExecuteNonQuery();DBConfig.sqlite_cmd = new SQLiteCommand(sql, DBConfig.sqlite_connect);
             DBConfig.sqlite_cmd.ExecuteNonQuery();
 
             // show database in the gui
             Show_DB();
-
+            updateChart(); // function的最後面加上這一行
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -171,7 +214,8 @@ namespace _1013
 
             DBConfig.sqlite_cmd = new SQLiteCommand(sql, DBConfig.sqlite_connect);
             DBConfig.sqlite_cmd.ExecuteNonQuery();
-            Show_DB();  
+            Show_DB();
+            updateChart(); // function的最後面加上這一行
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -229,8 +273,6 @@ namespace _1013
 
         }
 
-
-
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             DataGridViewCellCollection selRowData = dataGridView1.Rows[e.RowIndex].Cells;
@@ -254,7 +296,6 @@ namespace _1013
             this.label5.Text = Convert.ToString(selRowData[0].Value);
 
         }
-
 
         private void button5_Click(object sender, EventArgs e)
         {
@@ -301,6 +342,7 @@ namespace _1013
                 xls.Quit();
             }
         }
+        
         private void label6_Click(object sender, EventArgs e)
         {
             SaveFileDialog save = new SaveFileDialog();
@@ -310,6 +352,77 @@ namespace _1013
             if (save.ShowDialog() != DialogResult.OK) return;
 
             chart1.SaveImage(save.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog save = new SaveFileDialog();
+            save.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            save.FileName = "Export_bar_Chart1_JPG";
+            save.Filter = "*.jpg|*.jpg";
+            if (save.ShowDialog() != DialogResult.OK) return;
+
+            chart1.SaveImage(save.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog save = new SaveFileDialog();
+            save.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            save.FileName = "Export_pie_Chart_Data";
+            save.Filter = "*.xlsx|*.xlsx";
+            if (save.ShowDialog() != DialogResult.OK) return;
+
+            // Excel 物件
+
+            Microsoft.Office.Interop.Excel.Application xls = null;
+            try
+            {
+                xls = new Microsoft.Office.Interop.Excel.Application();
+                // Excel WorkBook
+                Microsoft.Office.Interop.Excel.Workbook book = xls.Workbooks.Add();
+                //Excel.Worksheet Sheet = (Excel.Worksheet)book.Worksheets[1];
+                Microsoft.Office.Interop.Excel.Worksheet Sheet = xls.ActiveSheet;
+
+                // 把資料塞進 Excel 內
+
+                // 標題
+                Sheet.Cells[1, 1] = "標籤";
+                Sheet.Cells[1, 2] = "數量";
+
+                // 內容
+                for (int k = 0; k < this.chart2.Series["stocks"].Points.Count; k++)
+                {
+                    Sheet.Cells[k + 2, 1] = this.chart2.Series["stocks"].Points[k].AxisLabel.ToString();
+                    Sheet.Cells[k + 2, 2] = this.chart2.Series["stocks"].Points[k].YValues[0].ToString();
+                }
+
+
+                // 儲存檔案
+                book.SaveAs(save.FileName);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                xls.Quit();
+            }
+
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog save = new SaveFileDialog();
+            save.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            save.FileName = "Export_Chart_pie_JPG";
+            save.Filter = "*.jpg|*.jpg";
+            if (save.ShowDialog() != DialogResult.OK) return;
+
+            chart2.SaveImage(save.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
 
         }
     }
