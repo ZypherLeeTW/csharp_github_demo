@@ -35,7 +35,7 @@ namespace _1013
         public class DBConfig
         {
             //log.db要放在【bin\Debug底下】      
-            public static string dbFile = Application.StartupPath + @"\DATA.db";
+            public static string dbFile = Application.StartupPath + @"\log.db";
 
             public static string dbPath = "Data source=" + dbFile;
 
