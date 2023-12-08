@@ -191,6 +191,11 @@ namespace _1013
                        + " '" + _price.ToString() + "' , "
                        + " '" + _number.ToString() + "'   "
                       + ");";
+
+            string ot = String.Format("Insert : {0} , {1} , {2} , {3} , {4}", _date.ToString(), _stock_type.ToString(), _name.ToString(), _price.ToString(), _number.ToString());
+            richTextBox1.AppendText(ot);
+
+
             DBConfig.sqlite_cmd = new SQLiteCommand(sql, DBConfig.sqlite_connect);
             DBConfig.sqlite_cmd.ExecuteNonQuery();
             
@@ -223,7 +228,7 @@ namespace _1013
 
             _price = Convert.ToDouble(textBox1.Text);
             _number = Convert.ToDouble(textBox2.Text);
-            _serial = Convert.ToInt32(label5.Text);
+            _serial = Convert.ToInt32(textBox3.Text);
 
 
             string sql = @"UPDATE record " +
@@ -232,6 +237,11 @@ namespace _1013
                         + " price = '" + _price.ToString() + "',"
                         + " number = '" + _number.ToString() + "' "
                         + "   where serial = " + _serial.ToString() + ";";
+
+
+            string ot = String.Format("Update : {0} , {1} , {2} , {3} , {4}", _name, _stock_type.ToString(), _price.ToString(), _number.ToString(), _serial.ToString());
+            richTextBox1.AppendText(ot);
+
 
 
             DBConfig.sqlite_cmd = new SQLiteCommand(sql, DBConfig.sqlite_connect);
