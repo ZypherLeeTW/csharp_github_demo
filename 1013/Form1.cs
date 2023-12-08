@@ -419,7 +419,7 @@ namespace _1013
 
                 // 標題
                 Sheet.Cells[1, 1] = "標籤";
-                Sheet.Cells[1, 2] = "數量";
+                Sheet.Cells[1, 2] = "總價格";
 
                 // 內容
                 for (int k = 0; k < this.chart2.Series["stocks"].Points.Count; k++)

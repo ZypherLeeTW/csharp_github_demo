@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea13 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend13 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series13 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea14 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend14 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series14 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -411,7 +411,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("微軟正黑體", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label7.Location = new System.Drawing.Point(846, 93);
+            this.label7.Location = new System.Drawing.Point(847, 18);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(114, 19);
@@ -420,10 +420,10 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(1034, 603);
+            this.button7.Location = new System.Drawing.Point(1015, 587);
             this.button7.Margin = new System.Windows.Forms.Padding(2);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(68, 27);
+            this.button7.Size = new System.Drawing.Size(120, 59);
             this.button7.TabIndex = 6;
             this.button7.Text = "匯出圖表";
             this.button7.UseVisualStyleBackColor = true;
@@ -431,10 +431,10 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(877, 603);
+            this.button8.Location = new System.Drawing.Point(643, 587);
             this.button8.Margin = new System.Windows.Forms.Padding(2);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(64, 27);
+            this.button8.Size = new System.Drawing.Size(120, 59);
             this.button8.TabIndex = 5;
             this.button8.Text = "匯出報表";
             this.button8.UseVisualStyleBackColor = true;
@@ -442,23 +442,23 @@
             // 
             // chart2
             // 
-            chartArea13.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea13);
-            legend13.Enabled = false;
-            legend13.Name = "Legend1";
-            this.chart2.Legends.Add(legend13);
-            this.chart2.Location = new System.Drawing.Point(643, 142);
+            chartArea1.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea1);
+            legend1.Enabled = false;
+            legend1.Name = "Legend1";
+            this.chart2.Legends.Add(legend1);
+            this.chart2.Location = new System.Drawing.Point(643, 76);
             this.chart2.Margin = new System.Windows.Forms.Padding(2);
             this.chart2.Name = "chart2";
-            series13.ChartArea = "ChartArea1";
-            series13.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series13.CustomProperties = "PieLabelStyle=Outside, PieLineColor=Black";
-            series13.Font = new System.Drawing.Font("微軟正黑體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            series13.Label = "#VALX \\n#PERCENT / #VAL";
-            series13.Legend = "Legend1";
-            series13.Name = "stocks";
-            this.chart2.Series.Add(series13);
-            this.chart2.Size = new System.Drawing.Size(492, 432);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series1.CustomProperties = "PieLabelStyle=Outside, PieLineColor=Black";
+            series1.Font = new System.Drawing.Font("微軟正黑體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            series1.Label = "#VALX \\n#PERCENT / #VAL";
+            series1.Legend = "Legend1";
+            series1.Name = "stocks";
+            this.chart2.Series.Add(series1);
+            this.chart2.Size = new System.Drawing.Size(492, 507);
             this.chart2.TabIndex = 4;
             this.chart2.Text = "chart2";
             // 
@@ -466,7 +466,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("微軟正黑體", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label6.Location = new System.Drawing.Point(223, 93);
+            this.label6.Location = new System.Drawing.Point(191, 18);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(114, 19);
@@ -475,10 +475,10 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(527, 587);
+            this.button6.Location = new System.Drawing.Point(488, 587);
             this.button6.Margin = new System.Windows.Forms.Padding(2);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(68, 27);
+            this.button6.Size = new System.Drawing.Size(120, 59);
             this.button6.TabIndex = 2;
             this.button6.Text = "匯出圖表";
             this.button6.UseVisualStyleBackColor = true;
@@ -486,10 +486,10 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(70, 587);
+            this.button5.Location = new System.Drawing.Point(4, 587);
             this.button5.Margin = new System.Windows.Forms.Padding(2);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(64, 27);
+            this.button5.Size = new System.Drawing.Size(120, 59);
             this.button5.TabIndex = 1;
             this.button5.Text = "匯出報表";
             this.button5.UseVisualStyleBackColor = true;
@@ -497,20 +497,20 @@
             // 
             // chart1
             // 
-            chartArea14.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea14);
-            legend14.Name = "Legend1";
-            this.chart1.Legends.Add(legend14);
-            this.chart1.Location = new System.Drawing.Point(4, 142);
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart1.Legends.Add(legend2);
+            this.chart1.Location = new System.Drawing.Point(4, 76);
             this.chart1.Margin = new System.Windows.Forms.Padding(2);
             this.chart1.Name = "chart1";
-            series14.ChartArea = "ChartArea1";
-            series14.Font = new System.Drawing.Font("微軟正黑體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            series14.Label = "#VAL";
-            series14.Legend = "Legend1";
-            series14.Name = "stocks";
-            this.chart1.Series.Add(series14);
-            this.chart1.Size = new System.Drawing.Size(604, 432);
+            series2.ChartArea = "ChartArea1";
+            series2.Font = new System.Drawing.Font("微軟正黑體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            series2.Label = "#VAL";
+            series2.Legend = "Legend1";
+            series2.Name = "stocks";
+            this.chart1.Series.Add(series2);
+            this.chart1.Size = new System.Drawing.Size(604, 507);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
             // 
