@@ -242,8 +242,6 @@ namespace _1013
             string ot = String.Format("Update : {0} , {1} , {2} , {3} , {4}", _name, _stock_type.ToString(), _price.ToString(), _number.ToString(), _serial.ToString());
             richTextBox1.AppendText(ot);
 
-
-
             DBConfig.sqlite_cmd = new SQLiteCommand(sql, DBConfig.sqlite_connect);
             DBConfig.sqlite_cmd.ExecuteNonQuery();
             Show_DB();
