@@ -10,6 +10,12 @@ using System.Windows.Forms;
 
 using System.Data.SQLite;
 
+// ScottPlot start
+using ScottPlot.Plottable;
+using static OfficeOpenXml.ExcelErrorValue;
+using System.Collections;
+using ScottPlot;
+// ScottPlot end
 
 
 namespace _1013
@@ -18,17 +24,33 @@ namespace _1013
     {
         int index = 1; //for db
 
+        // ScottPlot start
+        private Crosshair Crosshair;
+        // ScottPlot end
+
         public Form1()
         {
             InitializeComponent();
+
             // 打開程式後，跳出Form2，確認帳號密碼
             Form2 form2;
             form2 = new Form2();
             form2.ShowDialog();
+
+            //資料庫讀取
             Load_DB();
             Show_DB();
+
+            //設定成最後一筆ID
             label5.Text = index.ToString();
 
+            // ScottPlot start
+            Crosshair = formsPlot1.Plot.AddCrosshair(0, 0);
+            formsPlot1.Refresh();
+            // ScottPlot end
+
+
+            //更新顯示圖表
             updateChart();
         }
 
@@ -91,7 +113,7 @@ namespace _1013
         {
             // 1. 進貨統計
 
-            string sql = @"SELECT * from record where type = 1;";
+            string sql = @"SELECT * from record where type = 0;";
             DBConfig.sqlite_cmd = new SQLiteCommand(sql, DBConfig.sqlite_connect);
             DBConfig.sqlite_datareader = DBConfig.sqlite_cmd.ExecuteReader();
 
@@ -170,8 +192,8 @@ namespace _1013
                        + " '" + _number.ToString() + "'   "
                       + ");";
             DBConfig.sqlite_cmd = new SQLiteCommand(sql, DBConfig.sqlite_connect);
-            DBConfig.sqlite_cmd.ExecuteNonQuery();DBConfig.sqlite_cmd = new SQLiteCommand(sql, DBConfig.sqlite_connect);
             DBConfig.sqlite_cmd.ExecuteNonQuery();
+            
 
             // show database in the gui
             Show_DB();
@@ -425,5 +447,146 @@ namespace _1013
             chart2.SaveImage(save.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
 
         }
+
+        
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            //stamp 物品數值
+            List<double> Bandage = new List<double> { };
+            List<double> Alcohol = new List<double> { };
+            List<double> Mask = new List<double> { };
+            List<double> Thermometer = new List<double> { };
+            List<double> Wetwipes = new List<double> { };
+
+            //用plt這個變數，當作【圖表數據】的捷徑
+            var plt = formsPlot1.Plot;
+            
+            plt.Title("進出貨統計圖表");
+            
+            string sql = @"SELECT * FROM record WHERE type = 0;";
+
+            using (SQLiteCommand sqlite_cmd = new SQLiteCommand(sql, DBConfig.sqlite_connect))
+            {
+                using (SQLiteDataReader sqlite_datareader = sqlite_cmd.ExecuteReader())
+                {
+                    Dictionary<string, double> _stocks_bar_out = new Dictionary<string, double>();
+                    Dictionary<string, double> _stocks_bar_out_sum = new Dictionary<string, double>();
+                    
+                    //遍歷
+                    while (sqlite_datareader.Read())
+                    {
+                        //convert datetime to string
+                        DateTimeOffset timestamp = DateTimeOffset.FromUnixTimeSeconds((long)sqlite_datareader["date"]);
+                        string timestampString = timestamp.ToString("yyyy-MM-dd");
+                        //get column data
+                        string name = sqlite_datareader["name"].ToString();
+                        double price = Convert.ToDouble(sqlite_datareader["price"]);
+                        double number = Convert.ToDouble(sqlite_datareader["number"]);
+                        
+                        switch (name)
+                        {
+                            case "繃帶":
+                                Bandage.Add(number);
+                                break;
+                            case "酒精":
+                                Alcohol.Add(number);
+                                break;
+                            case "口罩":
+                                Mask.Add(number);
+                                break;
+                            case "溫度計":
+                                Thermometer.Add(number);
+                                break;
+                            case "濕紙巾":
+                                Wetwipes.Add(number);
+                                break;
+                            }
+
+                    }
+
+                    // 使用 AddSignal 方法添加折線圖
+                    double[] arrBandage = Bandage.ToArray();
+                    double[] arrAlcohol = Alcohol.ToArray();
+                    double[] arrMask = Mask.ToArray();
+                    double[] arrThermometer = Thermometer.ToArray();
+                    double[] arrWetwipes = Wetwipes.ToArray();
+
+                    for (int i = 1; i < arrBandage.Length; arrBandage[i] += arrBandage[i - 1], i++) ;
+                    for (int i = 1; i < arrAlcohol.Length; arrAlcohol[i] += arrAlcohol[i - 1], i++) ;
+                    for (int i = 1; i < arrMask.Length; arrMask[i] += arrMask[i - 1], i++) ;
+                    for (int i = 1; i < arrThermometer.Length; arrThermometer[i] += arrThermometer[i - 1], i++) ;
+                    for (int i = 1; i < arrWetwipes.Length; arrWetwipes[i] += arrWetwipes[i - 1], i++) ;
+
+
+                    int n1 = arrBandage.Length;
+                    int n2 = arrAlcohol.Length;
+                    int n3 = arrMask.Length;
+                    int n4 = arrThermometer.Length;
+                    int n5 = arrWetwipes.Length;
+                    double[] X1 = Enumerable.Range(1, n1 * 50).Where(x => x % 50 == 0).Select(x => (double)x).ToArray();
+                    double[] X2 = Enumerable.Range(1, n2 * 50).Where(x => x % 50 == 0).Select(x => (double)x).ToArray();
+                    double[] X3 = Enumerable.Range(1, n3 * 50).Where(x => x % 50 == 0).Select(x => (double)x).ToArray();
+                    double[] X4 = Enumerable.Range(1, n4 * 50).Where(x => x % 50 == 0).Select(x => (double)x).ToArray();
+                    double[] X5 = Enumerable.Range(1, n5 * 50).Where(x => x % 50 == 0).Select(x => (double)x).ToArray();
+
+
+                    plt.AddScatter(X1, arrBandage, color: Color.Red,label:"繃帶");
+                    plt.AddScatter(X2, arrAlcohol, color: Color.Aqua, label: "酒精");
+                    plt.AddScatter(X3, arrMask, color: Color.Black, label: "口罩");
+                    plt.AddScatter(X4, arrThermometer, color: Color.Brown, label: "溫度計");
+                    plt.AddScatter(X5, arrWetwipes, color: Color.DimGray, label: "濕紙巾");
+                    
+
+
+                    
+
+
+
+
+                    // 顯示圖例
+                    plt.Legend();
+
+                    // 顯示標題
+                    plt.Title("存貨數量");
+
+                    // 顯示 x 軸和 y 軸標籤
+                    plt.XLabel("走勢");
+                    plt.YLabel("剩餘數量");
+
+                    // 更新圖表
+                    formsPlot1.Refresh();
+                }
+            }
+
+            plt.SetAxisLimits(0, 5, -25, 25);
+            formsPlot1.Refresh();
+        }
+
+        // 滑鼠移動時，顯示座標
+        private void formsPlot1_MouseMove(object sender, MouseEventArgs e)
+        {
+            (double coordinateX, double coordinateY) =
+                                                 formsPlot1.GetMouseCoordinates();
+
+            Crosshair.X = coordinateX;
+            Crosshair.Y = coordinateY;
+
+            formsPlot1.Refresh(lowQuality: true, skipIfCurrentlyRendering: true);
+        }
+
+        // 滑鼠移動進入圖表時，顯示座標
+        private void formsPlot1_MouseEnter(object sender, EventArgs e)
+        {
+            Crosshair.IsVisible = true;
+        }
+
+        // 滑鼠移動離開圖表時，關閉顯示座標
+        private void formsPlot1_MouseLeave(object sender, EventArgs e)
+        {
+            Crosshair.IsVisible = false;
+            formsPlot1.Refresh();
+        }
+
     }
 }
