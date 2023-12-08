@@ -238,7 +238,6 @@ namespace _1013
                         + " number = '" + _number.ToString() + "' "
                         + "   where serial = " + _serial.ToString() + ";";
 
-
             string ot = String.Format("Update : {0} , {1} , {2} , {3} , {4}", _name, _stock_type.ToString(), _price.ToString(), _number.ToString(), _serial.ToString());
             richTextBox1.AppendText(ot);
 
