@@ -595,5 +595,19 @@ namespace _1013
             formsPlot1.Refresh();
         }
 
+        private void button10_Click(object sender, EventArgs e)
+        {
+            int _serial = Convert.ToInt32(textBox3.Text);
+
+            string sql = @"DELETE FROM record " +
+                         "WHERE serial = " + _serial.ToString() + ";";
+            string ot = String.Format("DELETE : ID = {0}", _serial.ToString());
+            richTextBox1.AppendText(ot);
+
+            DBConfig.sqlite_cmd = new SQLiteCommand(sql, DBConfig.sqlite_connect);
+            DBConfig.sqlite_cmd.ExecuteNonQuery();
+            Show_DB();
+            updateChart(); // function的最後面加上這一行
+        }
     }
 }
